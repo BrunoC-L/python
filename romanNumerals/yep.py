@@ -1,20 +1,32 @@
-def evaluate(numeral):
-    sum = 0
-    last = None
-    block = 0
-    for c in numeral:
-        if (not ("IVXLCDM".__contains__(c))):
-            print("{} has Invalid characters!".format(numeral))
-            return
-        dec = decimal(c)
-        if (block < dec):
-            block = dec - block
-        else:
-            sum += block
-            block = dec
-    print("{} = {}".format(numeral, sum + block))
+def toDecimal(romanNumeral):
+    thousandsString, romanNumeral = getThousandsString(romanNumeral)
+    hundredsString, romanNumeral = getHundredsString(romanNumeral)
 
-def decimal(c):
+def getThousandsString(romanNumeral):
+    thousandsString = ""
+    i = 0
+    length = len(romanNumeral)
+    while(i < length):
+        c = romanNumeral[i]
+        if (not "MC".__contains__(c)):
+            break
+        thousandsString += c
+        i += 1
+    return thousandsString, romanNumeral[i:]
+
+def getHundredsString(romanNumeral):
+    thousandsString = ""
+    i = 0
+    length = len(romanNumeral)
+    while(i < length):
+        c = romanNumeral[i]
+        if (not "DC".__contains__(c)):
+            break
+        thousandsString += c
+        i += 1
+    return thousandsString, romanNumeral[i:]
+
+def valueAndSubstract(c):
     if (c == "I"):
         return 1
     if (c == "V"):
@@ -30,14 +42,45 @@ def decimal(c):
     if (c == "M"):
         return 1000
 
-evaluate("MDCLXVI")
-evaluate("IV")
-evaluate("XIV")
-evaluate("XVI")
-evaluate("XVI")
-evaluate("LXIV")
-evaluate("LXVI")
-evaluate("XCIX")
-evaluate("CMXCIX")
-evaluate("MMMCMXCIX")
-evaluate("MMMCIX")
+tests = [
+    "MDCLXVI", 1666,
+    "IV", 4,
+    "XIV", 14,
+    "XVI", 16,
+    "LXIV", 64,
+    "XCIX", 99,
+    "CMXCIX", 999,
+    "MMMCMXCIX", 3999,
+    "MMMCIX", 3109,
+    "XXX", 30,
+    "XXXIV", 34,
+    "XXXVI", 36,
+    "XLVI", 46,
+    "DLVIII", 558,
+    "MMMDCXLIV", 3644,
+    "MDCCCXXXVII", 1837,
+    "XXXVII", 37,
+    "XXIX", 29,
+    "XXII", 22,
+    "XXIII", 23,
+    "MCDLVI", 1456,
+    "MCDVLI", 1446,
+    "MCDLI", 1451,
+    "MLDXI", 1,
+
+    "MXXC", None,
+    "XVX", None,
+    "IIV", None,
+    "MCMC", None,
+    "MDCCCXXXIVI", None,
+    "VX", None,
+    "IVI", None,
+    "IXD", None,
+    "XKV", None,
+    "VV", None,
+]
+
+toDecimal("MCMLLC")
+
+# for i in range(int(len(tests) / 2)):
+#     assert(evaluate(tests[2 * i]) == tests[2 * i + 1])
