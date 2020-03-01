@@ -1,4 +1,66 @@
 class RomanNumeralConverter:
+    def __init__(self, value):
+        if (type(value) == str):
+            self.romanNumeral = value
+            self.toDecimal()
+        if (type(value) == int):
+            if (value >= 4000 or value < 0):
+                print("Input a decimal value between 0 and 3999")
+                return
+            self.decimal = value
+            self.toRoman()
+
+    def getDecimal(self):
+        return self.decimal
+
+    def getRoman(self):
+        return self.romanNumeral
+
+    def toRoman(self):
+        self.romanNumeral = ""
+        tempDecimal = self.decimal
+        while (self.decimal >= 1000):
+            self.romanNumeral += "M"
+            self.decimal -= 1000
+        if (self.decimal >= 900):
+            self.romanNumeral += "CM"
+            self.decimal -= 900
+        if (self.decimal >= 500):
+            self.romanNumeral += "D"
+            self.decimal -= 500
+        if (self.decimal >= 400):
+            self.romanNumeral += "CD"
+            self.decimal -= 400
+        while (self.decimal >= 100):
+            self.romanNumeral += "C"
+            self.decimal -= 100
+        if (self.decimal >= 90):
+            self.romanNumeral += "XC"
+            self.decimal -= 90
+        if (self.decimal >= 50):
+            self.romanNumeral += "L"
+            self.decimal -= 50
+        if (self.decimal >= 40):
+            self.romanNumeral += "XL"
+            self.decimal -= 40
+        while (self.decimal >= 10):
+            self.romanNumeral += "X"
+            self.decimal -= 10
+        if (self.decimal >= 9):
+            self.romanNumeral += "IX"
+            self.decimal -= 9
+        if (self.decimal >= 5):
+            self.romanNumeral += "V"
+            self.decimal -= 5
+        if (self.decimal == 4):
+            self.romanNumeral += "IV"
+            self.decimal -= 4
+        while (self.decimal >= 1):
+            self.romanNumeral += "I"
+            self.decimal -= 1
+        print(self.romanNumeral)
+        self.decimal = tempDecimal
+
     def accept(self, letter):
         times = 0
         while (len(self.romanNumeral) > 0 and self.romanNumeral[0] == letter):
@@ -9,9 +71,9 @@ class RomanNumeralConverter:
     def lookahead(self, letters):
         return self.romanNumeral.find(letters) == 0
 
-    def toDecimal(self, romanNumeral):
+    def toDecimal(self):
         self.sum = 0
-        self.romanNumeral = romanNumeral
+        tempNumeral = self.romanNumeral
         try:
             self.thousands()
             self.fiveHundreds()
@@ -20,10 +82,13 @@ class RomanNumeralConverter:
             self.tens()
             self.fives()
             self.units()
-            print(f"{romanNumeral} = {self.sum}")
-            return self.sum
+            print(f"{self.romanNumeral} = {self.sum}")
+            self.decimal = self.sum
+            self.romanNumeral = tempNumeral
         except Exception as err:
             print(err)
+            self.decimal = None
+            self.romanNumeral = None
 
     def thousands(self):
         toAdd = 1000 * self.accept("M")
@@ -160,4 +225,8 @@ tests = [
 ]
 
 for i in range(int(len(tests) / 2)):
-    assert(RomanNumeralConverter().toDecimal(tests[2 * i]) == tests[2 * i + 1])
+    assert(RomanNumeralConverter(tests[2 * i]).getDecimal() == tests[2 * i + 1])
+    assert(RomanNumeralConverter(tests[2 * i]).getRoman() == (tests[2 * i] if tests[2 * i + 1] is not None else tests[2 * i + 1]))
+    if (tests[2 * i + 1] is not None):
+        assert(RomanNumeralConverter(tests[2 * i + 1]).getRoman() == tests[2 * i])
+        assert(RomanNumeralConverter(tests[2 * i + 1]).getDecimal() == tests[2 * i + 1])
