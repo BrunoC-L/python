@@ -11,7 +11,7 @@ class RomanNumeralConverter:
             self.toRoman()
 
     def __repr__(self):
-        return f"{self.romanNumeral} in roman is {self.decimal} in decimal" if self.decimal is not None else f"{self.romanNumeral} is an invalid roman numeral"
+        return f"{self.romanNumeral} in roman is {self.decimal} in decimal" if self.decimal is not None else "invalid"
 
     def getDecimal(self):
         return self.decimal
@@ -232,4 +232,4 @@ for i in range(int(len(tests) / 2)):
         assert(RomanNumeralConverter(tests[2 * i + 1]).getRoman() == tests[2 * i])
         assert(RomanNumeralConverter(tests[2 * i + 1]).getDecimal() == tests[2 * i + 1])
 
-print(RomanNumeralConverter("XIV"))
+print(RomanNumeralConverter("XIIIV"))
