@@ -10,6 +10,9 @@ class RomanNumeralConverter:
             self.decimal = value
             self.toRoman()
 
+    def __repr__(self):
+        return f"{self.romanNumeral} in roman is {self.decimal} in decimal" if self.decimal is not None else f"{self.romanNumeral} is an invalid roman numeral"
+
     def getDecimal(self):
         return self.decimal
 
@@ -58,7 +61,6 @@ class RomanNumeralConverter:
         while (self.decimal >= 1):
             self.romanNumeral += "I"
             self.decimal -= 1
-        print(self.romanNumeral)
         self.decimal = tempDecimal
 
     def accept(self, letter):
@@ -82,7 +84,6 @@ class RomanNumeralConverter:
             self.tens()
             self.fives()
             self.units()
-            print(f"{self.romanNumeral} = {self.sum}")
             self.decimal = self.sum
             self.romanNumeral = tempNumeral
         except Exception as err:
@@ -230,3 +231,5 @@ for i in range(int(len(tests) / 2)):
     if (tests[2 * i + 1] is not None):
         assert(RomanNumeralConverter(tests[2 * i + 1]).getRoman() == tests[2 * i])
         assert(RomanNumeralConverter(tests[2 * i + 1]).getDecimal() == tests[2 * i + 1])
+
+print(RomanNumeralConverter("XIV"))
