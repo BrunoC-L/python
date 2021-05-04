@@ -5,7 +5,6 @@ def main(args):
     folder = args[0]
     maxdepth = int(args[1])
     extensions = args[2:]
-    print(listdir(folder))
     print(count(folder, extensions, maxdepth))
 
 def count(folder, extensions, depth):
